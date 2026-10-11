@@ -1,20 +1,31 @@
 services:
 
   mysql:
-
     image: mysql:8
 
-  service-a:
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ordersdb
 
+    ports:
+      - "3306:3306"
+
+  service-a:
     build:
       context: ../src/ServiceA.Api
 
-  service-b:
+    ports:
+      - "8080:8080"
 
+  service-b:
     build:
       context: ../src/ServiceB.Api
 
-  otel-collector:
+    ports:
+      - "8081:8081"
 
-    image:
-      otel/opentelemetry-collector-contrib
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib
+
+    volumes:
+      - ../collector/otel-collector-config.yaml:/etc/otelcol/config.yaml

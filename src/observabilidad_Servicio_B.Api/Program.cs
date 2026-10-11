@@ -1,32 +1,61 @@
-builder.Services
+using Microsoft.EntityFrameworkCore;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
+using Serilog;
+using ServiceB.Api.Data;
 
-.AddOpenTelemetry()
+var builder = WebApplication.CreateBuilder(args);
 
-.WithTracing(tracing =>
+Log.Logger = new LoggerConfiguration()
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .CreateLogger();
+
+builder.Host.UseSerilog();
+
+builder.Services.AddControllers();
+
+builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddDbContext<AppDbContext>(options =>
 {
-     tracing
-
-     .AddAspNetCoreInstrumentation()
-
-     .AddHttpClientInstrumentation()
-
-     .AddOtlpExporter();
-})
-
-.WithMetrics(metrics =>
-{
-     metrics
-
-     .AddAspNetCoreInstrumentation()
-
-     .AddRuntimeInstrumentation()
-
-     .AddHttpClientInstrumentation();
+    options.UseMySql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        ServerVersion.AutoDetect(
+            builder.Configuration.GetConnectionString("DefaultConnection")));
 });
 
-builder.Host.UseSerilog(
- (ctx, log) =>
- {
-     log
-      .WriteTo.Console();
- });
+builder.Services.AddOpenTelemetry()
+    .ConfigureResource(resource =>
+    {
+        resource.AddService("observabilidad_Servicio_B");
+    })
+    .WithTracing(tracing =>
+    {
+        tracing
+            .AddAspNetCoreInstrumentation()
+            .AddHttpClientInstrumentation()
+            .AddEntityFrameworkCoreInstrumentation()
+            .AddOtlpExporter(options =>
+            {
+                options.Endpoint =
+                    new Uri("http://otel-collector:4317");
+            });
+    })
+    .WithMetrics(metrics =>
+    {
+        metrics
+            .AddAspNetCoreInstrumentation()
+            .AddHttpClientInstrumentation()
+            .AddRuntimeInstrumentation()
+            .AddPrometheusExporter();
+    });
+
+var app = builder.Build();
+
+app.UseOpenTelemetryPrometheusScrapingEndpoint();
+
+app.MapControllers();
+
+app.Run();

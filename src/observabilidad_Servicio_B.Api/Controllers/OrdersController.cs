@@ -1,3 +1,13 @@
+using System.Diagnostics;
+
+private static readonly ActivitySource
+ActivitySource = new("orders-service");
+
+activity?.SetTag(
+    "business.company",
+    empresa);
+
+
 [ApiController]
 [Route("orders")]
 public class OrdersController : ControllerBase

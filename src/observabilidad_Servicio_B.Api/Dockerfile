@@ -17,3 +17,4 @@ WORKDIR /app
 COPY --from=build /app .
 
 ENTRYPOINT ["dotnet","observabilidad_Servicio_B.Api.dll"]
+

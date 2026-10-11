@@ -1,32 +1,52 @@
-builder.Services
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
+using Serilog;
 
-.AddOpenTelemetry()
+var builder = WebApplication.CreateBuilder(args);
 
-.WithTracing(tracing =>
-{
-     tracing
+Log.Logger = new LoggerConfiguration()
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .CreateLogger();
 
-     .AddAspNetCoreInstrumentation()
+builder.Host.UseSerilog();
 
-     .AddHttpClientInstrumentation()
+builder.Services.AddControllers();
 
-     .AddOtlpExporter();
-})
+builder.Services.AddHttpClient();
 
-.WithMetrics(metrics =>
-{
-     metrics
+builder.Services.AddEndpointsApiExplorer();
 
-     .AddAspNetCoreInstrumentation()
+builder.Services.AddOpenTelemetry()
+    .ConfigureResource(resource =>
+    {
+        resource.AddService("observabilidad_Servicio_A");
+    })
+    .WithTracing(tracing =>
+    {
+        tracing
+            .AddAspNetCoreInstrumentation()
+            .AddHttpClientInstrumentation()
+            .AddOtlpExporter(options =>
+            {
+                options.Endpoint =
+                    new Uri("http://otel-collector:4317");
+            });
+    })
+    .WithMetrics(metrics =>
+    {
+        metrics
+            .AddAspNetCoreInstrumentation()
+            .AddHttpClientInstrumentation()
+            .AddRuntimeInstrumentation()
+            .AddPrometheusExporter();
+    });
 
-     .AddRuntimeInstrumentation()
+var app = builder.Build();
 
-     .AddHttpClientInstrumentation();
-});
+app.UseOpenTelemetryPrometheusScrapingEndpoint();
 
-builder.Host.UseSerilog(
- (ctx, log) =>
- {
-     log
-      .WriteTo.Console();
- });
+app.MapControllers();
+
+app.Run();
