@@ -1,0 +1,38 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+
+processors:
+  batch:
+
+  memory_limiter:
+    limit_mib: 512
+
+exporters:
+  awsxray:
+
+  prometheus:
+    endpoint: "0.0.0.0:8889"
+
+  awscloudwatchlogs:
+    log_group_name: observabilidad
+
+service:
+  pipelines:
+
+    traces:
+      receivers: [otlp]
+      processors: [batch,memory_limiter]
+      exporters: [awsxray]
+
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [prometheus]
+
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [awscloudwatchlogs]

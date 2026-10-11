@@ -1,0 +1,20 @@
+services:
+
+  mysql:
+
+    image: mysql:8
+
+  service-a:
+
+    build:
+      context: ../src/ServiceA.Api
+
+  service-b:
+
+    build:
+      context: ../src/ServiceB.Api
+
+  otel-collector:
+
+    image:
+      otel/opentelemetry-collector-contrib
