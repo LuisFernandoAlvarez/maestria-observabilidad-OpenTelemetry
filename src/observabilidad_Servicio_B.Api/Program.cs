@@ -1,9 +1,9 @@
-using Microsoft.EntityFrameworkCore;
+
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Serilog;
-using observabilidad_Servicio_A.Api.Data;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,8 +21,7 @@ builder.Services.AddHttpClient();
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseNpgsql(
-        builder.Configuration.GetConnectionString(
-            "DefaultConnection"));
+        builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
 builder.Services.AddOpenTelemetry()
@@ -36,6 +35,7 @@ builder.Services.AddOpenTelemetry()
             .AddSource("service-a")
             .AddAspNetCoreInstrumentation()
             .AddHttpClientInstrumentation()
+            .AddEntityFrameworkCoreInstrumentation()
             .AddOtlpExporter(options =>
             {
                 options.Endpoint =
