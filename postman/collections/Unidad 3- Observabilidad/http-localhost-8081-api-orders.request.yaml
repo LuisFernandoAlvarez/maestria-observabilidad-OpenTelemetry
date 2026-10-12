@@ -1,0 +1,9 @@
+$kind: http-request
+name: http://localhost:8081/api/orders
+description: ""
+url: http://localhost:8081/api/orders
+method: GET
+body:
+  type: json
+  content: '{"product":"Monitor","price":1200}'
+order: 2000

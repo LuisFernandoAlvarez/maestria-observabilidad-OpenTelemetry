@@ -1,34 +1,54 @@
+using Microsoft.AspNetCore.Mvc;
+using observabilidad_Servicio_B.Api.Models;
 using System.Diagnostics;
+using System.Net.Http.Json;
 
-private static readonly ActivitySource
-ActivitySource = new("orders-service");
-
-activity?.SetTag(
-    "business.company",
-    empresa);
-
+namespace observabilidad_Servicio_A.Api.Controllers;
 
 [ApiController]
-[Route("orders")]
+[Route("api/orders")]
 public class OrdersController : ControllerBase
 {
-    private readonly AppDbContext _context;
+    private readonly HttpClient _httpClient;
 
-    public OrdersController(
-        AppDbContext context)
+    private static readonly ActivitySource Source =
+        new("service-a");
+
+    public OrdersController(IHttpClientFactory factory)
     {
-        _context = context;
+        _httpClient = factory.CreateClient();
     }
 
-    [HttpGet("{empresa}")]
-    public async Task<IActionResult> Get(
-        string empresa)
+    [HttpGet]
+    public async Task<IActionResult> GetOrders()
     {
-        var data =
-            await _context.Orders
-                .Where(x => x.Empresa == empresa)
-                .ToListAsync();
+        using var activity =
+            Source.StartActivity("get-orders-from-service-b");
 
-        return Ok(data);
+        var response = await _httpClient.GetAsync(
+            "http://service-a:8080/api/orders");
+
+        var content =
+            await response.Content.ReadAsStringAsync();
+
+        return Content(content, "application/json");
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateOrder(
+        [FromBody] CreateOrderRequest order)
+    {
+        using var activity =
+            Source.StartActivity("create-order-service-b");
+
+        var response =
+            await _httpClient.PostAsJsonAsync(
+                "http://service-a:8080/api/orders",
+                order);
+
+        var content =
+            await response.Content.ReadAsStringAsync();
+
+        return Content(content, "application/json");
     }
 }

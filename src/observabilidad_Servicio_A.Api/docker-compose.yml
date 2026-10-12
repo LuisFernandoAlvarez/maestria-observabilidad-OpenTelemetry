@@ -1,0 +1,31 @@
+services:
+
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    environment:
+      POSTGRES_DB: ordersdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+
+  service-a:
+    build:
+      context: ../observabilidad_Servicio_A.Api
+      dockerfile: Dockerfile
+    container_name: service-a
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+
+  service-b:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: service-b
+    ports:
+      - "8081:8080"
+    depends_on:
+      - service-a

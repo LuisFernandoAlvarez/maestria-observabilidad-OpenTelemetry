@@ -1,0 +1,11 @@
+$kind: http-request
+name: http://localhost:5174/api/orders
+description: ""
+url: http://localhost:8081/api/orders
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: '{"product":"Laptop","price":2500}'
+order: 1000

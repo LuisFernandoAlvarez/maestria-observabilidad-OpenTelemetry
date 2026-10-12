@@ -1,0 +1,8 @@
+C:\Maestria\maestria-observabilidad-OpenTelemetry\src\observabilidad_Servicio_A.Api\obj\Debug\net8.0\observabilidad_Servicio_A.Api.csproj.AssemblyReference.cache
+C:\Maestria\maestria-observabilidad-OpenTelemetry\src\observabilidad_Servicio_A.Api\obj\Debug\net8.0\rpswa.dswa.cache.json
+C:\Maestria\maestria-observabilidad-OpenTelemetry\src\observabilidad_Servicio_A.Api\obj\Debug\net8.0\observabilidad_Servicio_A.Api.GeneratedMSBuildEditorConfig.editorconfig
+C:\Maestria\maestria-observabilidad-OpenTelemetry\src\observabilidad_Servicio_A.Api\obj\Debug\net8.0\observabilidad_Servicio_A.Api.AssemblyInfoInputs.cache
+C:\Maestria\maestria-observabilidad-OpenTelemetry\src\observabilidad_Servicio_A.Api\obj\Debug\net8.0\observabilidad_Servicio_A.Api.AssemblyInfo.cs
+C:\Maestria\maestria-observabilidad-OpenTelemetry\src\observabilidad_Servicio_A.Api\obj\Debug\net8.0\observabilidad_Servicio_A.Api.csproj.CoreCompileInputs.cache
+C:\Maestria\maestria-observabilidad-OpenTelemetry\src\observabilidad_Servicio_A.Api\obj\Debug\net8.0\observabilidad_Servicio_A.Api.MvcApplicationPartsAssemblyInfo.cache
+C:\Maestria\maestria-observabilidad-OpenTelemetry\src\observabilidad_Servicio_A.Api\obj\Debug\net8.0\observabilidad_Servicio_A.Api.sourcelink.json

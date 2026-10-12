@@ -3,7 +3,7 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Serilog;
-using ServiceB.Api.Data;
+using observabilidad_Servicio_A.Api.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,27 +16,26 @@ builder.Host.UseSerilog();
 
 builder.Services.AddControllers();
 
-builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddHttpClient();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    options.UseMySql(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
-        ServerVersion.AutoDetect(
-            builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString(
+            "DefaultConnection"));
 });
 
 builder.Services.AddOpenTelemetry()
     .ConfigureResource(resource =>
     {
-        resource.AddService("observabilidad_Servicio_B");
+        resource.AddService("service-a");
     })
     .WithTracing(tracing =>
     {
         tracing
+            .AddSource("service-a")
             .AddAspNetCoreInstrumentation()
             .AddHttpClientInstrumentation()
-            .AddEntityFrameworkCoreInstrumentation()
             .AddOtlpExporter(options =>
             {
                 options.Endpoint =
@@ -48,7 +47,6 @@ builder.Services.AddOpenTelemetry()
         metrics
             .AddAspNetCoreInstrumentation()
             .AddHttpClientInstrumentation()
-            .AddRuntimeInstrumentation()
             .AddPrometheusExporter();
     });
 
