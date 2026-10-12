@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("observabilidad_Servicio_B.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a841dbd0b5e49d953ee3107e7599c29fee5061a2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8c129c70b03dd27bcb2dc2d5826ae0bf9f115ee1")]
 [assembly: System.Reflection.AssemblyProductAttribute("observabilidad_Servicio_B.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("observabilidad_Servicio_B.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

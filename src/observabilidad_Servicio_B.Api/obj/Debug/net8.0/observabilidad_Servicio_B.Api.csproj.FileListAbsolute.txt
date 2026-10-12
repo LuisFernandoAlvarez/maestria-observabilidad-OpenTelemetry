@@ -65,3 +65,4 @@ C:\Maestria\maestria-observabilidad-OpenTelemetry\src\observabilidad_Servicio_B.
 C:\Maestria\maestria-observabilidad-OpenTelemetry\src\observabilidad_Servicio_B.Api\obj\Debug\net8.0\observabilidad_Servicio_B.Api.pdb
 C:\Maestria\maestria-observabilidad-OpenTelemetry\src\observabilidad_Servicio_B.Api\obj\Debug\net8.0\observabilidad_Servicio_B.Api.genruntimeconfig.cache
 C:\Maestria\maestria-observabilidad-OpenTelemetry\src\observabilidad_Servicio_B.Api\obj\Debug\net8.0\ref\observabilidad_Servicio_B.Api.dll
+C:\Maestria\maestria-observabilidad-OpenTelemetry\src\observabilidad_Servicio_B.Api\bin\Debug\net8.0\dashboard-observabilidad.json
