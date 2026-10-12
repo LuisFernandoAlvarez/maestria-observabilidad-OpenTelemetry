@@ -18,12 +18,6 @@ builder.Services.AddControllers();
 
 builder.Services.AddHttpClient();
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-{
-    options.UseNpgsql(
-        builder.Configuration.GetConnectionString("DefaultConnection"));
-});
-
 builder.Services.AddOpenTelemetry()
     .ConfigureResource(resource =>
     {
@@ -35,7 +29,6 @@ builder.Services.AddOpenTelemetry()
             .AddSource("service-a")
             .AddAspNetCoreInstrumentation()
             .AddHttpClientInstrumentation()
-            .AddEntityFrameworkCoreInstrumentation()
             .AddOtlpExporter(options =>
             {
                 options.Endpoint =
